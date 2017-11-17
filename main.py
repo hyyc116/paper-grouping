@@ -214,6 +214,7 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2'):
 def main(citation_dis_path,output_path):
     citation_list = []
     citation_list.extend([line.split(',') for line in open(citation_dis_path)])
+    print citation_list
     grouping_papers(citation_list,output_path)
 
 if __name__ == '__main__':
