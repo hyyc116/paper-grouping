@@ -38,7 +38,7 @@ color_sequence = ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c',
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',level=logging.DEBUG)
 
 ## from a citation distribution dict {count: #(count)}, to split papers to three levels
-def grouping_papers(citation_list,distribution_path):
+def grouping_papers(citation_list,distribution_path,x_min_max=80,x_max_min=100):
     # 所有文章的被引次数
     citation_dis = Counter(citation_list)
     total = np.sum(citation_dis.values())
@@ -89,7 +89,7 @@ def grouping_papers(citation_list,distribution_path):
     ## plot the grid search result of using R2 directly
     ax10 = fig.add_subplot(5,2,3)
     ax11 = fig.add_subplot(5,2,4, projection='3d')
-    plot_fitting_and_distribution(fig,ax10,ax11,xs,ys,'r2',_min_y,_max_y)
+    plot_fitting_and_distribution(fig,ax10,ax11,xs,ys,'r2',_min_y,_max_y,x_min_max,x_max_min)
 
     ##plot percent curves as increase of x_max 
     ax20 = fig.add_subplot(5,2,5)
@@ -103,20 +103,20 @@ def grouping_papers(citation_list,distribution_path):
     ## plot the grid search result of using percentage r2
     ax30 = fig.add_subplot(5,2,7)
     ax31 = fig.add_subplot(5,2,8, projection='3d')
-    plot_fitting_and_distribution(fig,ax30,ax31,xs,ys,'percentage_r2',_min_y,_max_y)
+    plot_fitting_and_distribution(fig,ax30,ax31,xs,ys,'percentage_r2',_min_y,_max_y,x_min_max,x_max_min)
 
     ## plot the grid search result of using percentage r2
     ax40 = fig.add_subplot(5,2,9)
     ax41 = fig.add_subplot(5,2,10, projection='3d')
-    plot_fitting_and_distribution(fig,ax40,ax41,xs,ys,'adjusted_r2',_min_y,_max_y)
+    plot_fitting_and_distribution(fig,ax40,ax41,xs,ys,'adjusted_r2',_min_y,_max_y,x_min_max,x_max_min)
 
     plt.tight_layout()
     plt.savefig(distribution_path,dpi=200)
     logging.info('distribution saved to {:}.'.format(distribution_path))
 
-def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,evaluator_name,_min_y,_max_y):
+def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,evaluator_name,_min_y,_max_y,x_min_max=80,x_max_min=100):
     logging.info('Optimize using {:} ... '.format(evaluator_name))
-    start,end = fit_xmin_xmax(xs,ys,fig,ax2,evaluator_name)
+    start,end = fit_xmin_xmax(xs,ys,fig,ax2,evaluator_name,x_min_max,x_max_min)
     logging.info('Search result: X_min =  {:},  X_max = {:} ...'.format(start,end))
     popt,pcov = curve_fit(power_low_func,xs[start:end],ys[start:end])
     plot_citation_distribution(ax1,xs,ys)
