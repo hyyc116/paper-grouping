@@ -181,7 +181,7 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_m
 
             if evaluator_name=='adjusted_r2':
                 evaluator = adjusted_r2
-            elif evaluator_name =='percentage_r2':
+            elif evaluator_name =='percent_r2':
                 evaluator = percentage_r2
             elif evaluator_name == 'r2':
                 evaluator = r2
