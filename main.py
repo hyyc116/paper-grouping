@@ -210,6 +210,9 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2'):
     surf = ax.plot_surface(X,Y,Z, cmap=CM.coolwarm)
     fig.colorbar(surf, shrink=0.5, aspect=10,ax=ax)
     return max_start[-1],max_end[-1]
+
+def power_low_func(x,a,b):
+    return b*(x**(-a))
     
 def main(citation_dis_path,output_path):
     citation_list = []
