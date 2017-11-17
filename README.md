@@ -28,14 +28,5 @@ The output is an image showing result of citation distribution, procedures of pa
 ### Citations
 If you use the algorithms in this code, please add following reference.
     
-
-
-
-
-
-
-
-
-
-
+    
 
