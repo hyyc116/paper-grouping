@@ -103,7 +103,7 @@ def grouping_papers(citation_list,distribution_path,x_min_max=80,x_max_min=100):
     ## plot the grid search result of using percentage r2
     ax30 = fig.add_subplot(5,2,7)
     ax31 = fig.add_subplot(5,2,8, projection='3d')
-    plot_fitting_and_distribution(fig,ax30,ax31,xs,ys,'percentage_r2',_min_y,_max_y,x_min_max,x_max_min)
+    plot_fitting_and_distribution(fig,ax30,ax31,xs,ys,'percent_r2',_min_y,_max_y,x_min_max,x_max_min)
 
     ## plot the grid search result of using percentage r2
     ax40 = fig.add_subplot(5,2,9)
