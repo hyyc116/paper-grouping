@@ -141,7 +141,7 @@ def plot_percentage_curves(ax,xs,ys,xlabel,ylabel,title):
     ax.set_xscale('log')
     ax.set_yscale('log')
 
-def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2'):
+def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_min=100):
 
     rxs=[]
     rys=[]
@@ -151,11 +151,8 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2'):
     min_y = np.log(np.min(ys))
     normed_total_ys = (np.log(ys)-min_y)/(max_y-min_y)
 
-    end_x = len(ys)/2-5
-    start_y = len(ys)/2
-
-    x_is = np.arange(1,end_x,2)
-    y_is = np.arange(start_y,len(xs),5)
+    x_is = np.arange(1,x_min_max,2)
+    y_is = np.arange(x_max_min,len(xs),5)
 
     ROWS = len(x_is)
     COLS = len(y_is)
