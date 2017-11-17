@@ -224,4 +224,5 @@ if __name__ == '__main__':
         logging.info('e.g. {:} a.txt output.png'.format(sys.argv[0]))
     else:
         main(sys.argv[1],sys.argv[2])
+        
 
