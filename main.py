@@ -18,28 +18,14 @@ import math
 import numpy as np
 import random
 import logging
-import networkx as nx
-from itertools import combinations
 import pylab
-import itertools
 from mpl_toolkits.mplot3d import Axes3D
-import statsmodels.api as sm
-lowess = sm.nonparametric.lowess
-from scipy.interpolate import spline
-from multiprocessing.dummy import Pool as ThreadPool
-from networkx.algorithms import isomorphism
 from matplotlib import cm as CM
 from collections import Counter
-from viz_graph import plot_a_subcascade
-from scipy.signal import wiener
 import matplotlib as mpl
 from matplotlib.patches import Circle
 from matplotlib.patheffects import withStroke
 import matplotlib.colors as colors
-from matplotlib.colors import LogNorm
-from matplotlib.colors import LinearSegmentedColormap
-from networkx.algorithms.core import core_number
-from networkx.algorithms.core import k_core
 
 mpl.rcParams['agg.path.chunksize'] = 10000
 
