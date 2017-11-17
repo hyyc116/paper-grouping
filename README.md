@@ -1,5 +1,5 @@
 # paper-grouping
-scientific paper grouping algorithm based on citation distribution. Using a adjusted R square to evaluate the most suitable power law fitting line to citation distribution, and group papers into three levels: low-cited paper, medium-cited paper, and highly-cited paper. 
+Scientific paper grouping algorithm is based on the citation distribution. We use an adjusted R square to evaluate the most suitable power law fitting line to the citation distribution, and group papers into three levels: low-cited papers, medium-cited papers, and highly-cited papers. 
 
 ### Environment requirement
 
@@ -20,13 +20,12 @@ scientific paper grouping algorithm based on citation distribution. Using a adju
 Lines in citation_list.txt are citation count of each paper in a dataset separated by comma.
 
 ### Result format
-The output is an image showing result of citation distribution, procedures of paper grouping(including results of using R square, percent R square, and adjusted R square). The result of adjusted R square is recommended, but for some datasets, the other two may also be valuable. The format could be png, pdf,jpg, etc.
+The output is an image showing results of the citation distribution, procedures of paper grouping (including results of using R square, percent R square, and adjusted R square). The result of adjusted R square is recommended to adopt, but for some datasets, the other two R squares may also be useful. The format could be png, pdf, jpg, etc.
 
-![Grouping result of demo](output/grouping-result.png)
+![Grouping results of the demo](output/grouping-result.png)
 
 
 ### Citations
-If you use the algorithms in this code, please add following reference.
+If you use the algorithms in this repo, please cite us as:
+    to be added
     
-    
-
