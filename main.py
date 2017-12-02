@@ -83,7 +83,7 @@ def grouping_papers(citation_list,distribution_path,x_min_max=80,x_max_min=100):
     # ax00 = axes[0,0]
     ax00 = fig.add_subplot(5,2,1)
     logging.info('plot the original distribution...')
-    plot_citation_distribution(ax00,xs,ys)
+    plot_citation_distribution(ax00,xs,ys,10,300,_min_y,_max_y)
 
 
     ## plot the grid search result of using R2 directly
@@ -238,6 +238,6 @@ if __name__ == '__main__':
         logging.info('Two parameters should be provided: 1.citation list of your dataset, 2.the output result of grouping papers.')
         logging.info('e.g. {:} a.txt output.png'.format(sys.argv[0]))
     else:
-        main(sys.argv[1],sys.argv[2])
+        d(sys.argv[1],sys.argv[2])
         
 
