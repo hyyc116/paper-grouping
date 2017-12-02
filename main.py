@@ -28,7 +28,12 @@ from matplotlib.patheffects import withStroke
 import matplotlib.colors as colors
 
 mpl.rcParams['agg.path.chunksize'] = 10000
-
+params = {'legend.fontsize': 8,
+         'axes.labelsize': 15,
+         'axes.titlesize':20,
+         'xtick.labelsize':15,
+         'ytick.labelsize':15}
+pylab.rcParams.update(params)
 
 color_sequence = ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c',
                   '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5',
@@ -119,7 +124,7 @@ def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,evaluator_name,_min_y,_max_y
     start,end = fit_xmin_xmax(xs,ys,fig,ax2,evaluator_name,x_min_max,x_max_min)
     logging.info('Search result: X_min =  {:},  X_max = {:} ...'.format(start,end))
     popt,pcov = curve_fit(power_low_func,xs[start:end],ys[start:end])
-    plot_citation_distribution(ax1,xs,ys,start,end,_min_y,_max_y)
+    plot_citation_distribution(ax1,xs,ys,start,end,_min_y,_max_y,True)
     ax1.plot(np.linspace(start, end, 10), power_low_func(np.linspace(start, end, 10), *popt),label='$\\alpha={:.2f}$'.format(popt[0]))
     # ax1.plot([start]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{min}$'+'$={:}$'.format(start))
     # ax1.plot([end]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{max}$'+'$={:}$'.format(end))
