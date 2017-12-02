@@ -238,6 +238,6 @@ if __name__ == '__main__':
         logging.info('Two parameters should be provided: 1.citation list of your dataset, 2.the output result of grouping papers.')
         logging.info('e.g. {:} a.txt output.png'.format(sys.argv[0]))
     else:
-        d(sys.argv[1],sys.argv[2])
+        main(sys.argv[1],sys.argv[2])
         
 
