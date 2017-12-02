@@ -133,15 +133,15 @@ def plot_citation_distribution(ax,xs,ys,xmin,xmax,_min_y,_max_y,isFinal=False):
 
 
     if not isFinal:
-        ax1.plot([xmin]*10, np.linspace(_min_y, _max_y, 10),'--')
-        ax1.plot([xmax]*10, np.linspace(_min_y, _max_y, 10),'--')
+        ax.plot([xmin]*10, np.linspace(_min_y, _max_y, 10),'--')
+        ax.plot([xmax]*10, np.linspace(_min_y, _max_y, 10),'--')
         ax.text('II',xmin/2,10**-4)
         ax.text('I',(xmin+xmax)/2,10**-4)
         ax.text('III',1000,10**-2)
 
     else:
-        ax1.plot([xmin]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{min}$'+'$={:}$'.format(xmin))
-        ax1.plot([xmax]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{max}$'+'$={:}$'.format(xmax))
+        ax.plot([xmin]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{min}$'+'$={:}$'.format(xmin))
+        ax.plot([xmax]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{max}$'+'$={:}$'.format(xmax))
         ax.text('Low cited',xmin/2,10**-4)
         ax.text('Medium cited',(xmin+xmax)/2,10**-4)
         ax.text('High cited',1000,10**-2)
