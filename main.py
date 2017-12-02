@@ -10,7 +10,7 @@ import json
 from collections import defaultdict
 from collections import Counter
 import matplotlib
-matplotlib.use('Agg')
+# matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from sklearn.metrics import r2_score
