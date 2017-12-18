@@ -124,14 +124,17 @@ def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,evaluator_name,_min_y,_max_y
     start,end = fit_xmin_xmax(xs,ys,fig,ax2,evaluator_name,x_min_max,x_max_min)
     logging.info('Search result: X_min =  {:},  X_max = {:} ...'.format(start,end))
     popt,pcov = curve_fit(power_low_func,xs[start:end],ys[start:end])
-    plot_citation_distribution(ax1,xs,ys,start,end,_min_y,_max_y,True)
-    ax1.plot(np.linspace(start, end, 10), power_low_func(np.linspace(start, end, 10), *popt),label='$\\alpha={:.2f}$'.format(popt[0]))
+    xmin = xs[start]
+    xmax = xs[end]
+    plot_citation_distribution(ax1,xs,ys,xmin,xmax,_min_y,_max_y,True)
+    ax1.plot(np.linspace(xmin, xmax, 10), power_low_func(np.linspace(xmin, xmax, 10), *popt),label='$\\alpha={:.2f}$'.format(popt[0]))
     # ax1.plot([start]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{min}$'+'$={:}$'.format(start))
     # ax1.plot([end]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{max}$'+'$={:}$'.format(end))
 
 def plot_citation_distribution(ax,xs,ys,xmin,xmax,_min_y,_max_y,isFinal=False):
     ax.plot(xs,ys,'o',fillstyle='none')
-
+    # xmin = xs[start]
+    # xmax = xs[end]
     # ax.plot([xmin]*10, np.linspace(_min_y, _max_y, 10),'--')
     # ax.plot([xmax]*10, np.linspace(_min_y, _max_y, 10),'--')
 
