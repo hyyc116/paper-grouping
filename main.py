@@ -150,7 +150,7 @@ def plot_citation_distribution(ax,xs,ys,xmin,xmax,_min_y,_max_y,isFinal=False):
     else:
         ax.plot([xmin]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{min}$'+'$={:}$'.format(xmin))
         ax.plot([xmax]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{max}$'+'$={:}$'.format(xmax))
-        ax.text(1,10**-3,'Low-cited',fontsize=15)
+        ax.text(1,10**-3,'Lowly-cited',fontsize=15)
         ax.text(xmin,10**-1,'Medium-cited',fontsize=15)
         ax.text(xmax,10**-4,'Highly-cited',fontsize=15)
         ax.legend()
