@@ -27,8 +27,7 @@ from matplotlib.patches import Circle
 from matplotlib.patheffects import withStroke
 import matplotlib.colors as colors
 import powerlaw
-
-
+from PowlawFit import *
 
 mpl.rcParams['agg.path.chunksize'] = 10000
 params = {'legend.fontsize': 8,
@@ -97,7 +96,7 @@ def grouping_papers(citation_list,distribution_path,x_min_max=80,x_max_min=100):
     ## plot the grid search result of using R2 directly
     ax10 = fig.add_subplot(5,2,3)
     ax11 = fig.add_subplot(5,2,4, projection='3d')
-    plot_fitting_and_distribution(fig,ax10,ax11,xs,ys,'r2',_min_y,_max_y,x_min_max,x_max_min)
+    plot_fitting_and_distribution(fig,ax10,ax11,xs,ys,citation_list,'r2',_min_y,_max_y,x_min_max,x_max_min)
 
     ##plot percent curves as increase of x_max 
     ax20 = fig.add_subplot(5,2,5)
@@ -111,20 +110,20 @@ def grouping_papers(citation_list,distribution_path,x_min_max=80,x_max_min=100):
     ## plot the grid search result of using percentage r2
     ax30 = fig.add_subplot(5,2,7)
     ax31 = fig.add_subplot(5,2,8, projection='3d')
-    plot_fitting_and_distribution(fig,ax30,ax31,xs,ys,'percent_r2',_min_y,_max_y,x_min_max,x_max_min)
+    plot_fitting_and_distribution(fig,ax30,ax31,xs,ys,citation_list,'percent_r2',_min_y,_max_y,x_min_max,x_max_min)
 
     ## plot the grid search result of using percentage r2
     ax40 = fig.add_subplot(5,2,9)
     ax41 = fig.add_subplot(5,2,10, projection='3d')
-    plot_fitting_and_distribution(fig,ax40,ax41,xs,ys,'adjusted_r2',_min_y,_max_y,x_min_max,x_max_min)
+    plot_fitting_and_distribution(fig,ax40,ax41,xs,ys,citation_list,'adjusted_r2',_min_y,_max_y,x_min_max,x_max_min)
 
     plt.tight_layout()
     plt.savefig(distribution_path,dpi=200)
     logging.info('distribution saved to {:}.'.format(distribution_path))
 
-def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,evaluator_name,_min_y,_max_y,x_min_max=80,x_max_min=100):
+def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,citation_list,evaluator_name,_min_y,_max_y,x_min_max=80,x_max_min=100):
     logging.info('Optimize using {:} ... '.format(evaluator_name))
-    start,end = fit_xmin_xmax(xs,ys,fig,ax2,evaluator_name,x_min_max,x_max_min)
+    start,end = fit_xmin_xmax(xs,ys,citation_list,fig,ax2,evaluator_name,x_min_max,x_max_min)
     logging.info('Search result: X_min =  {:},  X_max = {:} ...'.format(start,end))
     popt,pcov = curve_fit(power_low_func,xs[start:end],ys[start:end])
     xmin = xs[start]
@@ -170,7 +169,7 @@ def plot_percentage_curves(ax,xs,ys,xlabel,ylabel,title):
     ax.set_xscale('log')
     ax.set_yscale('log')
 
-def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_min=100):
+def fit_xmin_xmax(xs,ys,citation_list,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_min=100):
 
     rxs=[]
     rys=[]
@@ -181,7 +180,6 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_m
     normed_total_ys = (np.log(ys)-min_y)/(max_y-min_y)
 
     ### 如何进行grid search的维度定义
-
 
     x_is = np.arange(1,x_min_max,2)
     y_is = np.arange(x_max_min,len(xs),5)
@@ -198,10 +196,15 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_m
 
             x = xs[start:end]
             y = ys[start:end]
+            print 'start,end:',xs[start],xs[end]
+            # popt,pcov = curve_fit(power_low_func,x,y)
+            # fit_y = power_low_func(x, *popt)
+            # r2 = r2_score(np.log(y),np.log(fit_y))
 
-            popt,pcov = curve_fit(power_low_func,x,y)
-            fit_y = power_low_func(x, *popt)
-            r2 = r2_score(np.log(y),np.log(fit_y))
+            fit = basic_fit(citation_list,xs[start],xs[end])
+
+            r2 = 1/fit.power_law.D
+
 
             normed_y = (np.log(y)-min_y)/(max_y-min_y)
             percent_of_num = np.sum(normed_y)/float(np.sum(normed_total_ys))
