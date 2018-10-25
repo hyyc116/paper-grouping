@@ -10,8 +10,28 @@ Scientific paper grouping algorithm is based on the citation distribution. We us
 
 
 ### Usage
+	
+	usage: python main.py [options] --input [input citation file path] --output [output figure path]
 
-    python main.py data/citation_list.txt output/grouping_result.png
+	optional arguments:
+	  -h, --help            show this help message and exit
+	  -i INPUTFILE, --input INPUTFILE
+	                        the path of input file, cannot be none.
+	  -o OUTPUT, --output OUTPUT
+	                        the path of output figure, cannot be none.
+	  -s STEP, --step STEP  the step of grid search, default is 5.
+	  -m MEDIUM, --medium MEDIUM
+	                        the medium value of grid search,integers,default is
+	                        80.
+	  -v, --verbose         whether print logging info
+
+	take care the medium value and the step of your dataset!
+
+### Example
+
+	python main.py -i data/citation_list.txt -o output/grouping-result.png
+
+	python main.py -i data/aps-citations.txt -o output/aps-grouping-result.png -s 3 -m 80
 
 ### Format of citation_list.txt
     

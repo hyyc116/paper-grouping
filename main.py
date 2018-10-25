@@ -27,7 +27,7 @@ from matplotlib.patches import Circle
 from matplotlib.patheffects import withStroke
 import matplotlib.colors as colors
 import powerlaw
-
+import argparse
 
 
 mpl.rcParams['agg.path.chunksize'] = 10000
@@ -46,7 +46,7 @@ color_sequence = ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c',
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',level=logging.DEBUG)
 
 ## from a citation distribution dict {count: #(count)}, to split papers to three levels
-def grouping_papers(citation_list,distribution_path,x_min_max=80,x_max_min=100):
+def grouping_papers(citation_list,distribution_path,medium,step,verbose):
     # 所有文章的被引次数
     citation_dis = Counter(citation_list)
     total = np.sum(citation_dis.values())
@@ -62,7 +62,18 @@ def grouping_papers(citation_list,distribution_path,x_min_max=80,x_max_min=100):
     px_xs = []
     px_ys = []
     px_sum = 0
-    for citation_count in sorted(citation_dis):
+
+    ccs = sorted(citation_dis)
+
+    x_min_max = medium-step-5
+    x_max_min = medium+step-5
+
+    logging.info('---------- paper grouping ---------------')
+    logging.info('number of papers: {:}, the medium is {:}, and step is {:}'.format(len(citation_list),medium,step))
+    logging.info('-----------------------------------------')
+
+
+    for citation_count in ccs:
         if citation_count==0:
             continue
 
@@ -86,45 +97,51 @@ def grouping_papers(citation_list,distribution_path,x_min_max=80,x_max_min=100):
     px_ys = np.array(px_ys)/float(px_sum)
 
     # fig,axes = plt.subplots(4,2,figsize=(14,20))
-    fig = plt.figure(figsize=(14,25))
+    fig = plt.figure(figsize=(20,25))
     ## first plot citation distribution
     # ax00 = axes[0,0]
-    ax00 = fig.add_subplot(5,2,1)
+    ax00 = fig.add_subplot(5,3,1)
     logging.info('plot the original distribution...')
     plot_citation_distribution(ax00,xs,ys,10,300,_min_y,_max_y)
 
 
     ## plot the grid search result of using R2 directly
-    ax10 = fig.add_subplot(5,2,3)
-    ax11 = fig.add_subplot(5,2,4, projection='3d')
-    plot_fitting_and_distribution(fig,ax10,ax11,xs,ys,'r2',_min_y,_max_y,x_min_max,x_max_min)
+    ax10 = fig.add_subplot(5,3,4)
+    ax11 = fig.add_subplot(5,3,5, projection='3d')
+    ax12 = fig.add_subplot(5,3,6)
+    xmin,xmax = plot_fitting_and_distribution(fig,ax10,ax11,xs,ys,'r2',_min_y,_max_y,x_min_max,x_max_min,step)
+    plot_num_dis(citation_list,xmin,xmax,ax12)
 
     ##plot percent curves as increase of x_max 
-    ax20 = fig.add_subplot(5,2,5)
+    ax20 = fig.add_subplot(5,3,7)
     logging.info('plotting the percentage rate .. ')
     plot_percentage_curves(ax20,p_xs,p_ys,'$x_{max}$','$P(1,x_{max})$','trend of $P(1,x_{max})$')
     
-    ax21 = fig.add_subplot(5,2,6)
+    ax21 = fig.add_subplot(5,3,8)
     logging.info('plotting the points perentage .. ')
     plot_percentage_curves(ax21,px_xs,px_ys,'$x_{max}$','#($x_i$)/#($X$)','trend of #($x_i$)/#($X$)')
 
     ## plot the grid search result of using percentage r2
-    ax30 = fig.add_subplot(5,2,7)
-    ax31 = fig.add_subplot(5,2,8, projection='3d')
-    plot_fitting_and_distribution(fig,ax30,ax31,xs,ys,'percent_r2',_min_y,_max_y,x_min_max,x_max_min)
+    ax30 = fig.add_subplot(5,3,10)
+    ax31 = fig.add_subplot(5,3,11, projection='3d')
+    ax32 = fig.add_subplot(5,3,12)
+    xmin,xmax = plot_fitting_and_distribution(fig,ax30,ax31,xs,ys,'percent_r2',_min_y,_max_y,x_min_max,x_max_min,step)
+    plot_num_dis(citation_list,xmin,xmax,ax32)
 
     ## plot the grid search result of using percentage r2
-    ax40 = fig.add_subplot(5,2,9)
-    ax41 = fig.add_subplot(5,2,10, projection='3d')
-    plot_fitting_and_distribution(fig,ax40,ax41,xs,ys,'adjusted_r2',_min_y,_max_y,x_min_max,x_max_min)
+    ax40 = fig.add_subplot(5,3,13)
+    ax41 = fig.add_subplot(5,3,14, projection='3d')
+    ax42 = fig.add_subplot(5,3,15)
+    xmin,xmax = plot_fitting_and_distribution(fig,ax40,ax41,xs,ys,'adjusted_r2',_min_y,_max_y,x_min_max,x_max_min,step)
+    plot_num_dis(citation_list,xmin,xmax,ax42)
 
     plt.tight_layout()
     plt.savefig(distribution_path,dpi=200)
     logging.info('distribution saved to {:}.'.format(distribution_path))
 
-def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,evaluator_name,_min_y,_max_y,x_min_max=80,x_max_min=100):
+def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,evaluator_name,_min_y,_max_y,x_min_max,x_max_min,step):
     logging.info('Optimize using {:} ... '.format(evaluator_name))
-    start,end = fit_xmin_xmax(xs,ys,fig,ax2,evaluator_name,x_min_max,x_max_min)
+    start,end = fit_xmin_xmax(xs,ys,fig,ax2,evaluator_name,x_min_max,x_max_min,step)
     logging.info('Search result: X_min =  {:},  X_max = {:} ...'.format(start,end))
     popt,pcov = curve_fit(power_low_func,xs[start:end],ys[start:end])
     xmin = xs[start]
@@ -133,6 +150,54 @@ def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,evaluator_name,_min_y,_max_y
     ax1.plot(np.linspace(xmin, xmax, 10), power_low_func(np.linspace(xmin, xmax, 10), *popt),label='$\\alpha={:.2f}$'.format(popt[0]))
     # ax1.plot([start]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{min}$'+'$={:}$'.format(start))
     # ax1.plot([end]*10, np.linspace(_min_y, _max_y, 10),'--',label='$x_{max}$'+'$={:}$'.format(end))
+    return xmin,xmax
+
+
+def plot_num_dis(citation_list,xmin,xmax,ax):
+
+    total = len(citation_list)
+
+    low_num = 0
+    medium_num = 0
+    high_num = 0
+
+    for i,c in enumerate(citation_list):
+
+        if c < xmin:
+            low_num+=1
+        elif c<xmax:
+            medium_num+=1
+        else:
+            high_num+=1
+
+
+    xs = [low_num,medium_num,high_num]
+    labels = ['low','medium','high']
+
+    rects = ax.bar(np.arange(len(xs)),xs,align='center')
+
+    ax.set_xticks(np.arange(len(xs)))
+    ax.set_xticklabels(labels)
+    autolabel(rects,ax,total)
+    ax.set_xlabel('paper level')
+    ax.set_yscale('log')
+    ax.set_ylabel('number of papers')
+
+
+
+def autolabel(rects,ax,total,step=1):
+    """
+    Attach a text label above each bar displaying its height
+    """
+    for index in np.arange(len(rects),step=step):
+        rect = rects[index]
+        height = rect.get_height()
+        # print height
+        ax.text(rect.get_x() + rect.get_width()/2., 1.005*height,
+                '{:}({:.2%})'.format(height,height/float(total)),
+                ha='center', va='bottom')
+
+
 
 def plot_citation_distribution(ax,xs,ys,xmin,xmax,_min_y,_max_y,isFinal=False):
     ax.plot(xs,ys,'o',fillstyle='none')
@@ -170,7 +235,7 @@ def plot_percentage_curves(ax,xs,ys,xlabel,ylabel,title):
     ax.set_xscale('log')
     ax.set_yscale('log')
 
-def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_min=100):
+def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name,x_min_max,x_max_min,step):
 
     rxs=[]
     rys=[]
@@ -183,8 +248,8 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_m
     ### 如何进行grid search的维度定义
 
 
-    x_is = np.arange(1,x_min_max,2)
-    y_is = np.arange(x_max_min,len(xs),5)
+    x_is = np.arange(1,x_min_max,step)
+    y_is = np.arange(x_max_min,len(xs),step)
 
     ROWS = len(x_is)
     COLS = len(y_is)
@@ -199,9 +264,20 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_m
             x = xs[start:end]
             y = ys[start:end]
 
-            popt,pcov = curve_fit(power_low_func,x,y)
-            fit_y = power_low_func(x, *popt)
-            r2 = r2_score(np.log(y),np.log(fit_y))
+            popt,pcov = None,None
+            try:
+                popt,pcov = curve_fit(power_low_func,x,y)
+            except:
+                logging.warn('grid [{:},{:}],CANNOT FIND THE OPTINAL PARAMETERS. r2 is set to 0.'.format(x[0],x[-1]))
+                # continue
+
+            if popt is not None and pcov is not None:
+                fit_y = power_low_func(x, *popt)
+                r2 = r2_score(np.log(y),np.log(fit_y))
+
+            else:
+
+                r2 = 0
 
             normed_y = (np.log(y)-min_y)/(max_y-min_y)
             percent_of_num = np.sum(normed_y)/float(np.sum(normed_total_ys))
@@ -242,19 +318,76 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name='adjusted_r2',x_min_max=80,x_max_m
 
 def power_low_func(x,a,b):
     return b*(x**(-a))
+
     
-def main(citation_dis_path,output_path):
+def main():
+
+    parser = argparse.ArgumentParser(usage='python %(prog)s [options] --input [input citation file path] --output [output figure path]',epilog='take care the medium value and the step of your dataset!')
+
+    parser.add_argument('-i','--input',dest='inputfile',default=None,help='the path of input file, cannot be none.')
+    parser.add_argument('-o','--output',dest='output',default=None,help='the path of output figure, cannot be none.')
+    parser.add_argument('-s','--step',dest='step',default=5,type=int,help='the step of grid search, default is 5.')
+    parser.add_argument('-m','--medium',dest='medium',default=80,type=int,help='the medium value of grid search,integers,default is 80.')
+    parser.add_argument('-v','--verbose',dest='verbose',action='store_true',default=True,help='whether print logging info')
+
+
+    args = parser.parse_args()
+
+    inputfile = args.inputfile
+
+    if inputfile is None:
+
+        logging.info('input file path cannot be null.')
+
+        parser.print_help()
+
+        return
+
+    outfile = args.output
+
+    if outfile is None:
+
+        logging.info('output figure path cannot be null.')
+
+        parser.print_help()
+
+        return
+
+    step = args.step
+
+    medium = args.medium
+
+
+    if step < 1:
+
+        logging.info('step should be greater than 0.')
+
+        parser.print_help()
+
+        return
+
+
+    if medium < 1:
+
+        logging.info('step should be greater than 0.')
+
+        parser.print_help()
+
+        return
+
+
+    verbose = args.verbose
+
     citation_list = []
-    for line in open(citation_dis_path):
+    for line in open(inputfile):
         citations = [int(i) for i in line.split(',')]
         citation_list.extend(citations)
-    grouping_papers(citation_list,output_path)
+
+
+    ### 如何定义中间值是一个问题
+    grouping_papers(citation_list,outfile,medium,step,verbose)
 
 if __name__ == '__main__':
-    if len(sys.argv)!=3:
-        logging.info('Two parameters should be provided: 1.citation list of your dataset, 2.the output result of grouping papers.')
-        logging.info('e.g. {:} a.txt output.png'.format(sys.argv[0]))
-    else:
-        main(sys.argv[1],sys.argv[2])
+    main()
         
 
