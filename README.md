@@ -27,6 +27,9 @@ Scientific paper grouping algorithm is based on the citation distribution. We us
 
 	take care the medium value and the step of your dataset!
 
+	The medium value and the step is used to set the grid search. The range of xmin is set to [medium-step-5], and the range of xmax is set to [medium+step+5]. The step is step size of grid search. Take care of these two parameters!
+
+
 ### Example
 
 	python main.py -i data/citation_list.txt -o output/grouping-result.png
