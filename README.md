@@ -42,7 +42,7 @@ Lines in citation_list.txt are citation count of each paper in a dataset separat
 ### Result format
 The output is an image showing results of the citation distribution, procedures of paper grouping (including results of using R square, percent R square, and adjusted R square). The result of adjusted R square is recommended to adopt, but for some datasets, the other two R squares may also be useful. The format could be png, pdf, jpg, etc.
 
-![Grouping results of the demo](output/grouping-result.png)
+![Grouping results of the demo](output/aps-grouping-result.png)
 
 
 ### Citations
