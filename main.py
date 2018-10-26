@@ -49,7 +49,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',level=log
 def grouping_papers(citation_list,distribution_path,medium,step,verbose):
     # 所有文章的被引次数
     citation_dis = Counter(citation_list)
-    total = np.sum(citation_dis.values())
+    total = len(citation_list)
     xs = []
     ys = []
     _max_y = 0
@@ -155,7 +155,7 @@ def plot_fitting_and_distribution(fig,ax1,ax2,xs,ys,evaluator_name,_min_y,_max_y
 
 def plot_num_dis(citation_list,xmin,xmax,ax):
 
-    total = len(citation_list)
+    total_all = len(citation_list)
 
     low_num = 0
     medium_num = 0
@@ -178,7 +178,7 @@ def plot_num_dis(citation_list,xmin,xmax,ax):
 
     ax.set_xticks(np.arange(len(xs)))
     ax.set_xticklabels(labels)
-    autolabel(rects,ax,total)
+    autolabel(rects,ax,total_all)
     ax.set_xlabel('paper level')
     ax.set_yscale('log')
     ax.set_ylabel('number of papers')
