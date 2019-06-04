@@ -26,7 +26,7 @@ import matplotlib as mpl
 from matplotlib.patches import Circle
 from matplotlib.patheffects import withStroke
 import matplotlib.colors as colors
-import powerlaw
+# import powerlaw
 import argparse
 
 
@@ -46,10 +46,13 @@ color_sequence = ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c',
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s',level=logging.INFO)
 
 ## from a citation distribution dict {count: #(count)}, to split papers to three levels
-def grouping_papers(citation_list,distribution_path,medium,step):
+def grouping_papers(citation_list,distribution_path,medium,step,isPercent=True):
     # 所有文章的被引次数
     citation_dis = Counter(citation_list)
-    total = len(citation_list)
+    total = 1
+    if isPercent:
+        total = len(citation_list)
+
     xs = []
     ys = []
     _max_y = 0
@@ -283,9 +286,10 @@ def fit_xmin_xmax(xs,ys,fig,ax,evaluator_name,x_min_max,x_max_min,step):
             percent_of_num = np.sum(normed_y)/float(np.sum(normed_total_ys))
             percentage_r2 = r2*percent_of_num
 
-            percent_of_x = float(len(y))/float(len(ys))
-            efficiency = percent_of_num/percent_of_x
-            adjusted_r2 = percentage_r2*efficiency
+            # percent_of_x = float(len(y))/float(len(ys))
+            percent_of_x = np.log(float(len(y)))/np.log(float(len(ys)))
+            # efficiency = percent_of_num/percent_of_x
+            adjusted_r2 = percentage_r2/percent_of_x
 
             if evaluator_name=='adjusted_r2':
                 evaluator = adjusted_r2
@@ -328,8 +332,7 @@ def main():
     parser.add_argument('-o','--output',dest='output',default=None,help='the path of output figure, cannot be none.')
     parser.add_argument('-s','--step',dest='step',default=5,type=int,help='the step of grid search, default is 5.')
     parser.add_argument('-m','--medium',dest='medium',default=80,type=int,help='the medium value of grid search,integers,default is 80.')
-    # parser.add_argument('-v','--verbose',dest='verbose',action='store_true',default=True,help='whether print logging info')
-
+    parser.add_argument('-P','--percent',dest='percent',action='store_true',default=True,help='percent')
 
     args = parser.parse_args()
 
@@ -377,15 +380,14 @@ def main():
 
 
     # verbose = args.verbose
-
     citation_list = []
     for line in open(inputfile):
         citations = [int(i) for i in line.split(',')]
         citation_list.extend(citations)
 
-
+    percent = args.percent
     ### 如何定义中间值是一个问题
-    grouping_papers(citation_list,outfile,medium,step)
+    grouping_papers(citation_list,outfile,medium,step,percent)
 
 if __name__ == '__main__':
     main()
