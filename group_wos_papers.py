@@ -20,7 +20,7 @@ def group_wos_papers():
         ax = axes[int(i/3),i%3]
         cns = subj_cns[subj]
         xmin,xmax,xs,ys,slope_xs,delta_avg = find_xmin_xmax(cns)
-        plot_citation_distribution(ax0,xs,ys,xmin,xmax,subj)
+        plot_citation_distribution(ax,xs,ys,xmin,xmax,subj)
 
     plt.tight_layout()
     plt.savefig('output/wos_six_subj_result.png',dpi=400)
