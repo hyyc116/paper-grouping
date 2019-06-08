@@ -6,7 +6,7 @@ import json
 ## 将wos的数据进行分类
 def group_wos_papers():
 
-    subj_cns = json.loads('data/wos_subj_cd.json')
+    subj_cns = json.loads(open('data/wos_subj_cd.json').read())
 
     ## 画出所有领域的论文的分布
     all_cns = subj_cns['ALL']
