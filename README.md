@@ -51,9 +51,12 @@ The output is an image showing results of the citation distribution and the chan
 
 
 ### Dataset
-  ArtMiner
-  APS
-  WOS
+
+  * ArtMiner
+  * APS
+  * WOS
+
+
 ### Citations
 If you use the algorithms in this repo, please cite us as:
     to be added
