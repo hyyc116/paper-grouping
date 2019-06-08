@@ -11,6 +11,7 @@ def group_wos_papers():
     ## 画出所有领域的论文的分布
     all_cns = subj_cns['ALL']
     grouping_papers(all_cns,'output/wos_all_result.png')
+    compare_methods(all_cns)
     logging.info('wos all papers result saved to output/wos_all_result.png')
 
     ## 六个子领域的分布
