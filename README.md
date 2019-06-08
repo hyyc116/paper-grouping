@@ -38,7 +38,7 @@ Two methods are compared. Equally spliation, and 1%, 10%, other.
 Lines in citation_list.txt are citation count of each paper in a dataset separated by comma.
 
 ### Result format
-The output is an image showing results of the citation distribution and the change rate of slope of citation distributions. The result of adjusted R square is recommended to adopt, but for some datasets, the other two R squares may also be useful. The format could be png, pdf, jpg, etc.
+The output is an image showing results of the citation distribution and the change rate of slope of citation distributions.
 ![Grouping results of the demo](output/wos_all_result.png)
 
 ### Comparation
