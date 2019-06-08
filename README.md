@@ -50,6 +50,9 @@ The output is an image showing results of the citation distribution and the chan
 | top N | 51 |    220 |90%|9%|1%|
 
 
+more result figure could be found in output folder.
+
+
 ### Dataset
 
   * ArtMiner
