@@ -15,7 +15,7 @@ def group_wos_papers():
     logging.info('wos all papers result saved to output/wos_all_result.png')
 
     ## 六个子领域的分布
-    fig,axes = plt.subplots(2,3,figsize=(12,3.5))
+    fig,axes = plt.subplots(2,3,figsize=(12,7))
     for i,subj in enumerate([subj for subj in sorted(subj_cns.keys()) if subj !='ALL']):
 
         ax = axes[int(i/3),i%3]
