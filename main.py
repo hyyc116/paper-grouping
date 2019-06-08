@@ -182,7 +182,7 @@ def grouping_papers(citation_list,distribution_path,x_min_max = 200):
     num_percent(xs,ys,xmin,xmax)
     plot_figure_one(xs,ys,xmin,xmax,slope_xs,delta_avg,distribution_path)
 
-def plot_citation_distribution(ax,xs,ys,xmin,xmax,isFinal=False):
+def plot_citation_distribution(ax,xs,ys,xmin,xmax,title='Citation Distribution'):
     ax.plot(xs,ys,'o',fillstyle='none',alpha = 0.8)
     ax.plot([xmin]*10, np.linspace(np.min(ys), np.max(ys), 10),'--',label='$x_{min}$'+'$={:}$'.format(xmin))
     ax.plot([xmax]*10, np.linspace(np.min(ys), np.max(ys), 10),'-.',label='$x_{max}$'+'$={:}$'.format(xmax))
@@ -191,7 +191,7 @@ def plot_citation_distribution(ax,xs,ys,xmin,xmax,isFinal=False):
     ax.text(xmax*2,200,'Highly cited',fontsize=8)
     ax.legend()
 
-    ax.set_title('Citation Distribution')
+    ax.set_title(title)
     ax.set_xlabel('number of citations')
     ax.set_ylabel('number of publications')
     ax.set_xscale('log')
