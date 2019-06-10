@@ -47,6 +47,7 @@ The output is an image showing results of the citation distribution and the chan
 |:----------:|:-------------:|:------:|:------:|:------:|:------:|
 | our methods |  12 | 1954 |59.68%|40.30%|0.02%|
 | equally splitation |    4   |   15 |33%|33%|33%|
+|num citation | 1642| 3436| 99.98%| 0.01%|0.01%|
 | top N | 51 |    220 |90%|9%|1%|
 
 
