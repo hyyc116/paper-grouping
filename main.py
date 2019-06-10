@@ -84,10 +84,11 @@ def find_xmin_xmax(citation_list,x_min_max = 200):
 
         ## slope的计算是与前一个点连线的斜率与到第一个点连线的斜率的比值
         slope = abs((np.log(ccdf_ys[i-1])-np.log(ccdf_ys[i]))/float(np.log(xs[i])-np.log(xs[i-1])))/abs((np.log(ccdf_ys[0])-np.log(ccdf_ys[i]))/float(np.log(xs[i])-np.log(xs[0])))
-
+        slope = 1/slope
+        # slope = np.log(x)/float(np.log(ys[i]))
         if slope is not None:
             xmins.append(xs[i])
-            slopes.append(1/slope)
+            slopes.append(slope)
 
     slope_xs = []
     delta_slopes = []
@@ -99,8 +100,11 @@ def find_xmin_xmax(citation_list,x_min_max = 200):
         slope_xs.append(xmins[i])
         delta_slopes.append(abs(slopes[i]/slopes[i-1]))
 
-    delta_avg = [np.mean(delta_slopes[0 if i-5 < 0 else i-3 :i+1]) for i in range(len(delta_slopes))]
-    mean,std,mean_std = np.mean(delta_avg),np.std(delta_avg),np.mean(delta_avg)-np.std(delta_avg)
+    # delta_avg = [np.mean(delta_slopes[0 if i-3 < 0 else i-3 :i+1]) for i in range(len(delta_slopes))]
+    # mean,std,mean_std = np.mean(delta_avg),np.std(delta_avg),np.mean(delta_avg)-np.std(delta_avg)
+
+    delta_avg = delta_slopes
+    mean_std = 1
 
     ## 在一个std的范围内的置信区间是99%
     xmin = 0
@@ -148,7 +152,7 @@ def plot_figure_one(xs,ys,xmin,xmax,slope_xs,delta_avg,output):
     plot_citation_distribution(ax0,xs,ys,xmin,xmax)
     ax1 = axes[1]
     ax1.plot(slope_xs,delta_avg)
-    ax1.plot(slope_xs,[np.mean(delta_avg)-np.std(delta_avg)]*len(slope_xs),'--',c='r')
+    ax1.plot(slope_xs,[1]*len(slope_xs),'--',c='r')
     ax1.set_xscale('log')
     ax1.set_xlabel('number of citations')
     ax1.set_ylabel('slope change rate')
@@ -166,12 +170,23 @@ def compare_methods(citation_list):
     xs = []
     ys = []
     citation_counter = Counter(citation_list)
-    for x in sorted(citation_counter.keys(),reverse=True):
+    total_cit_num = np.sum(citation_counter.values())
+    num_count = 0
+    xmin_1=-1
+    xmax_1 = -1
+    for x in sorted(citation_counter.keys()):
+
+        if num_count/float(total_cit_num)>0.33 and xmin_1==-1:
+            xmin_1 = x
+
+        if num_count/float(total_cit_num)>0.66 and xmax_1==-1:
+            xmax_1 = x
+
+        num_count+=citation_counter[x]
+
         xs.append(x)
         ys.append(citation_counter[x])
 
-    xmax_1 = xs[int(len(xs)/3)]
-    xmin_1 = xs[int(len(xs)*2/3)]
 
     logging.info('xmin and xmax for 33% spliting is {:},{:}'.format(xmin_1,xmax_1))
     num_percent(xs,ys,xmin_1,xmax_1)
