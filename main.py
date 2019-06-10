@@ -163,10 +163,18 @@ def compare_methods(citation_list):
 
     num = len(citation_list)
     ## 第一种33%
-    xmax_1 = sorted_citations[int(num/3)]
-    xmin_1 = sorted_citations[int(num*2/3)]
+    xs = []
+    ys = []
+    citation_counter = Counter(citation_list)
+    for x in sorted(citation_counter.keys(),reverse=True):
+        xs.append(x)
+        ys.append(citation_counter[x])
+
+    xmax_1 = xs[int(len(xs)/3)]
+    xmin_1 = xs[int(len(xs)*2/3)]
 
     logging.info('xmin and xmax for 33% spliting is {:},{:}'.format(xmin_1,xmax_1))
+    num_percent(xs,ys,xmin_1,xmax_1)
 
     ## 第二种是%1，%10，other
     xmax_2 = sorted_citations[int(num*0.01)]
