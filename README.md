@@ -45,9 +45,8 @@ The output is an image showing results of the citation distribution and the chan
 
 | methods   |      xmin      |  xmax | lowly cited percentage | medium cited percentage | highly cited percentage|
 |:----------:|:-------------:|:------:|:------:|:------:|:------:|
-| our methods |  12 | 1954 |59.68%|40.30%|0.02%|
-| equally splitation |    4   |   15 |33%|33%|33%|
-|num citation | 1642| 3436| 99.98%| 0.01%|0.01%|
+| our methods |  32 | 1954 |82.51%|17.47%|0.02%|
+| equally splitation |    36   |   120 |84.64%|12.52%|2.83%|
 | top N | 51 |    220 |90%|9%|1%|
 
 
