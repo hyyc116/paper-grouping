@@ -170,19 +170,19 @@ def compare_methods(citation_list):
     xs = []
     ys = []
     citation_counter = Counter(citation_list)
-    total_cit_num = np.sum(citation_counter.values())
+    total_cit_num = np.sum(citation_list)
     num_count = 0
     xmin_1=-1
     xmax_1 = -1
     for x in sorted(citation_counter.keys()):
 
-        if num_count/float(total_cit_num)>0.33 and xmin_1==-1:
+        if num_count/float(total_cit_num)>1/float(3) and xmin_1==-1:
             xmin_1 = x
 
-        if num_count/float(total_cit_num)>0.66 and xmax_1==-1:
+        if num_count/float(total_cit_num)>2/float(3) and xmax_1==-1:
             xmax_1 = x
 
-        num_count+=citation_counter[x]
+        num_count+=citation_counter[x]*x
 
         xs.append(x)
         ys.append(citation_counter[x])
