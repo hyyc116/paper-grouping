@@ -153,7 +153,7 @@ def plot_figure_one(xs,ys,xmin,xmax,slope_xs,delta_avg,output):
     ax1 = axes[1]
     ax1.plot(slope_xs,delta_avg)
     # ax1.plot(slope_xs,[1]*len(slope_xs),'--',c='r')
-    ax1.plot([xmin]*10,np.linspace(np.min(delta_avg),np.max(delta_avg),10),'--',c='g')
+    ax1.plot([xmin]*10,np.linspace(np.min(delta_avg),np.max(delta_avg),10),'--',c='g',label='$x_{xmin}=%d$'%xmin)
     ax1.set_xscale('log')
     ax1.set_xlabel('number of citations')
     ax1.set_ylabel('slope change rate')
