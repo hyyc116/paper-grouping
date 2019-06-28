@@ -158,6 +158,7 @@ def plot_figure_one(xs,ys,xmin,xmax,slope_xs,delta_avg,output):
     ax1.set_xlabel('number of citations')
     ax1.set_ylabel('slope change rate')
     ax1.set_title('Slope Change Rate')
+    ax1.legend()
     plt.tight_layout()
     plt.savefig(output,dpi=400)
     logging.info('result figure saved to %s .' % output)
